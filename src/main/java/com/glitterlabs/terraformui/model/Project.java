@@ -26,31 +26,37 @@ public class Project {
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "PROJECT_ID")
+	//@Column(name = "PROJECT_ID")
+	@Column(name = "project_id")
 	private Long id;
 
 	/** The name. */
-	@Column(name = "NAME", nullable = false)
+	//@Column(name = "NAME", nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	/** The staus. */
-	@Column(name = "STATUS", nullable = false)
+	//@Column(name = "STATUS", nullable = false)
+	@Column(name = "status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ProjectStatus status;
 
 	/** The date. */
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-	@Column(name = "CREATED_DATE", nullable = false)
+	//@Column(name = "CREATED_DATE", nullable = false)
+	@Column(name = "created_date", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	/** The cloud type. */
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "CLOUD_ID", nullable = false)
+	//@JoinColumn(name = "CLOUD_ID", nullable = false)
+	@JoinColumn(name = "cloud_id", nullable = false)
 	private Cloud cloudType;
 
 	/** The path. */
-	@Column(name = "PATH", nullable = false)
+	//@Column(name = "PATH", nullable = false)
+	@Column(name = "path", nullable = false)
 	private String path;
 
 	/**

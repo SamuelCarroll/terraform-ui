@@ -1,7 +1,11 @@
 <div class="content-box">
 	<div id="show_projects" class="padded30">
 		<button type="button" class="app-btn" id="create_project">
-			<span>Create New </span>
+			<span>New Project</span>
+		</button>
+		<div class="horizontalgap" style="width:10px"/>
+		<button type="button" class="app-btn" id="copy_project">
+			<span>Copy Project</span>
 		</button>
 		<br/><br/>
 		<div class="scrollmessage alert alert-success" style="display:none;">
@@ -11,8 +15,8 @@
 		<table class="table table-hover table-bordered ">
 		    <thead>
 		      <tr>
-		        <th>Project name</th>
-		        <th>Date created</th>
+		        <th>Project Name</th>
+		        <th>Date Created</th>
 		        <th>Status</th>
 		        <th>Action</th>
 		      </tr>
@@ -30,7 +34,7 @@
 	   </table>
 	</div>
 	<div id="new_project_div" style="display:none" class="padded30">
-	 <h3 class="panelTitle "> Create new Project</h3>
+	 <h3 class="panelTitle "> Create New Project</h3>
 		<div class="form-horizontal">
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="projectName">Name <span style="color: red">*</span> :</label>
@@ -52,4 +56,28 @@
 			</div>
 		</div>
 	</div>
+	<div id="copy_project_div" style="display:none" class="padded30">
+         <h3 class="panelTitle "> Copy Project Template</h3>
+                <div class="form-horizontal">
+                        <div class="form-group">
+				<!--TODO change the input type below to drop down menu, will need to expand template class to populate menu-->
+                                <label class="control-label col-sm-2" for="projectName">Name <span style="color: red">*</span> :</label>
+                                <div class="col-sm-3">
+                                        <input type="email" id="copy_project_name" class="form-control" placeholder="Project name" required="required"/>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label class="control-label col-sm-2">Cloud:</label>
+                                <div class="col-sm-10">
+                                        <h4> <span class="label label-primary"> <%= cloudType %></span> </h4>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                        <button id="copy_project_save" type="button" class="app-btn active save">Save</button>
+                                        <a id="copy_project_cancel"  class="btn btn-link cancelbtn" type="reset">Cancel</a>
+                                </div>
+                        </div>
+                </div>
+        </div>
 </div>

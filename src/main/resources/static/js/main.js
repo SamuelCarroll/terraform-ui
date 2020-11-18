@@ -4,15 +4,15 @@ require.config({
 		jquery :       'lib/jquery-min',
 		underscore :   'lib/underscore-min',
 		backbone :     'lib/backbone-min',
-        text:          'lib/text',
-        waitMe:        'lib/waitMe',
-        util:          'lib/util',
-        bootstrap:     'lib/bootstrap.min',
-        datatable:     'lib/jquery.dataTables.min',
-        databoot:      'lib/dataTables.bootstrap.min',
-        fader:         'lib/chain_fade',
-        dnd:           'lib/dnd',
-        scroll:        'lib/jQuery.scrollText'
+    text:          'lib/text',
+    waitMe:        'lib/waitMe',
+    util:          'lib/util',
+    bootstrap:     'lib/bootstrap.min',
+    datatable:     'lib/jquery.dataTables.min',
+    databoot:      'lib/dataTables.bootstrap.min',
+    fader:         'lib/chain_fade',
+    dnd:           'lib/dnd',
+    scroll:        'lib/jQuery.scrollText'
 	},
 	shim : {
 		underscore: {
@@ -41,10 +41,9 @@ require.config({
 			deps: ['jquery']
 		}
 	}
-	
+
 });
 
 require(['app'], function(app){
 	app.initialize();
 });
-

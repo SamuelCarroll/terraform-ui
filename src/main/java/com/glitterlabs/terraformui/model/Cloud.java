@@ -19,15 +19,18 @@ public class Cloud {
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CLOUD_ID")
+	/** @Column(name = "CLOUD_ID") */
+	@Column(name = "cloud_id")
 	private Long id;
 
 	/** The name. */
-	@Column(name = "NAME", nullable = false)
+	/** @Column(name = "NAME", nullable = false) */
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	/** The date. */
-	@Column(name = "CREATED_DATE", nullable = false)
+	/** @Column(name = "CREATED_DATE", nullable = false) */
+	@Column(name = "created_date", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 

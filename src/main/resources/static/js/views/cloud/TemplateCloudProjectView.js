@@ -15,20 +15,20 @@ define([
       'click #new_project_save': 'saveNewProject',
       'click #new_project_cancel': 'cancelCreateProjectView',
       'click #copy_project': 'showCopyProjectView',
-      //'click #copy_project_save' : 'saveCopyProject',
-      'click #copy_project_cancel': 'cancelCopyProjectView',
-      'click .apply-action': 'applyProject'
+      'click #copy_project_cancel': 'cancelCopyProjectView'
     },
 
     initialize: function() {
-      this.cloud = 'aws';
+      this.cloud = 'template';
       this.cloudProjectCollection = new CloudProjectCollection({
         'cloudType': this.cloud
       });
     },
 
-    doRender: function() {
+    render: function() {
       var that = this;
+      $(".sidebar").find(".active").toggleClass("active");
+      $(".sidebar").find("#template_link").addClass("active");
       this.cloudProjectCollection.fetch({
         success: function(model) {
           var data = {
@@ -47,27 +47,22 @@ define([
       });
     },
 
-    render: function() {
-      $(".sidebar").find(".active").toggleClass("active");
-      $(".sidebar").find("#aws_link").addClass("active");
-      this.doRender();
-    },
-
     showCreateProjectView: function() {
       Util.swap($('#show_projects'), $('#new_project_div'));
     },
 
     showCopyProjectView: function() {
-      Util.swap($('#show_projects'), $('#copy_project_div'));
+      Util.swap($('#show_projects'), $('#new_project_div'));
     },
-
 
     saveNewProject: function(e) {
       var projectName = $('#new_project_name').val();
+      var cloudType = $('#new_project_cloud'.val());
       var that = this;
+      //todo find a way to get the cloudType as a drop down menu
       this.cloudProjectCollection.create({
         name: projectName,
-        cloudType: this.cloud
+        cloudType: this.cloud //set this to not template
       }, {
         wait: true,
         success: function(resp) {
@@ -80,55 +75,9 @@ define([
       Util.swap($('#new_project_div'), $('#show_projects'));
     },
 
-    /*saveCopyProject: function(e){
-    	var projectSrc = $('#copy_project_src').val();
-    	var projectName = $('#copy_project_name').val();
-    	var that=this;
-    	this.cloudProjectCollection.copy({src:projectSrc,name: projectName,cloudType:this.cloud},{
-    		wait : true,
-    		success : function(resp){
-    			that.render();
-    		}
-    	});
-    }*/
-
+    //todo get this to show all current images (allow for new name)
     cancelCopyProjectView: function() {
-      Util.swap($('#copy_project_div'), $('#show_projects'));
-    },
-
-    applyProject: function(event) {
-      var projectId = $(event.target).attr('id');
-      var that = this;
-      $.ajax({
-        type: "POST",
-        url: "/project/" + projectId + "/apply",
-        async: false,
-        success: function(response) {
-          Util.block();
-          that.doPoll(projectId);
-        },
-        error: function(response) {},
-        complete: function() {}
-      });
-    },
-
-    doPoll: function(projectId) {
-      var that = this;
-      $.get("/project/" + projectId + "/poll", function(data) {
-        if (data != 'Complete') {
-          //$(".scrollmessage span").fadeOut('slow');
-          //	        	$(".scrollmessage span").text(data);
-          setTimeout(that.doPoll(projectId), 3000);
-        } else {
-          Util.hide();
-          $(".scrollmessage").show();
-          $(".scrollmessage span").text(data);
-          setTimeout(function() {
-            $(".scrollmessage").hide();
-            that.doRender();
-          }, 5000);
-        }
-      });
+      Util.swap($('#new_project_div'), $('#show_projects'));
     },
 
     onClose: function() {

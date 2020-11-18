@@ -1,9 +1,10 @@
 define([ 'backbone','util'], function(Backbone,Util) {
 	var Router = Backbone.Router.extend({
 		routes : {
-		    '':'home',	
+			'':'home',
 			'show/aws' : 'showAWSCloudView',
 			'show/azure' : 'showAzureCloudView',
+			'show/template' : 'showTemplateCloudView',
 			':cloud/project/:id' : 'showProjectView'
 		}
 	});
@@ -15,7 +16,7 @@ define([ 'backbone','util'], function(Backbone,Util) {
 				var dashboardView = new DashboardView();
 				Util.showView(dashboardView);
 				Util.hide();
-			}); 
+			});
 		});
 		app_router.on('route:showAWSCloudView', function() {
 			require([ 'views/cloud/AWSCloudProjectView' ], function(AWSCloudProjectView) {
@@ -23,7 +24,7 @@ define([ 'backbone','util'], function(Backbone,Util) {
 				var awsCloudProjectView = new AWSCloudProjectView();
 				Util.showView(awsCloudProjectView);
 				Util.hide();
-			}); 
+			});
 		});
 		app_router.on('route:showAzureCloudView', function() {
 			require([ 'views/cloud/AzureCloudProjectView' ], function(AzureCloudProjectView) {
@@ -31,7 +32,15 @@ define([ 'backbone','util'], function(Backbone,Util) {
 				var azureCloudProjectView = new AzureCloudProjectView();
 				Util.showView(azureCloudProjectView);
 				Util.hide();
-			}); 
+			});
+		});
+		app_router.on('route:showTemplateCloudView', function() {
+			require([ 'views/cloud/TemplateCloudProjectView' ], function(TemplateCloudProjectView) {
+				Util.block();
+				var templateCloudProjectView = new TemplateCloudProjectView();
+				Util.showView(templateCloudProjectView);
+				Util.hide();
+			});
 		});
 		app_router.on('route:showProjectView', function(cloud,id) {
 			require([ 'views/project/ProjectView' ], function(ProjectView) {
@@ -39,11 +48,11 @@ define([ 'backbone','util'], function(Backbone,Util) {
 				var projectView = new ProjectView(cloud,id);
 				Util.showView(projectView);
 				Util.hide();
-			}); 
+			});
 		});
 		Backbone.history.start();
 	};
-	
+
 	return {
 	    initialize: initialize
 	};

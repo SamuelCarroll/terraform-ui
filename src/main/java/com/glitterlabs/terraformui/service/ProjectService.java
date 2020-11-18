@@ -80,6 +80,19 @@ public class ProjectService {
 		this.projectdao.save(project);
 	}
 
+	//consider adding a source and destination project...
+	/*public void copy(final Project project) throws IOException {
+		final String generateDirectoryName = ResourceNameGenerator.generateName();
+		Files.createDirectory(Paths.get(this.prop.getDirectoryPath(), generateDirectoryName));
+		LOG.debug("Directory {} created.", generateDirectoryName);
+		final Date date = new Date();
+		project.setDate(date);
+		final Cloud dbCloud = this.cloudDao.findByName(project.getCloudType().getName().toUpperCase());
+		project.setCloudType(dbCloud);
+		project.setPath(generateDirectoryName);
+		this.projectdao.save(project);
+	}*/
+
 	public void updateStatus(final Long projectId, final ProjectStatus status) {
 		final Project project = this.projectdao.findOne(projectId);
 		project.setStatus(status);

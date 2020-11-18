@@ -57,6 +57,8 @@ public class ResourceService {
 		LOG.debug("Create {}.", path);
 	}
 
+	//TODO add in a folder for pre-built images, since this will be easier than creating new every time
+
 	public List<Resource> findAllResources(final String projectId, final String subpath) {
 		List<Resource> result = new ArrayList<>();
 		final Project project = this.dao.findOne(Long.valueOf(projectId));
@@ -69,6 +71,8 @@ public class ResourceService {
 		}
 		return result;
 	}
+
+	//Consider adding the getProjectID
 
 	public String getResourceContent(final String projectId, final String resourcePath) throws IOException {
 		final Project project = this.dao.findOne(Long.valueOf(projectId));
