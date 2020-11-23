@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -58,9 +59,14 @@ public class ProjectService {
 	 * @param projectId the project id
 	 * @return the project
 	 */
-	public Project findById(final Long projectId) {
-		return this.projectdao.findOne(projectId);
-	}
+	 public Project findById(final Long projectId) {
+		 Optional<Project> project = this.projectdao.findById(projectId);
+		 Project realProj = new Project();
+		 if (project.isPresent()) {
+			 realProj = project.get();
+	 	 }
+		 return realProj;
+	 }
 
 	/**
 	 * Create new project.
@@ -77,6 +83,7 @@ public class ProjectService {
 		final Cloud dbCloud = this.cloudDao.findByName(project.getCloudType().getName().toUpperCase());
 		project.setCloudType(dbCloud);
 		project.setPath(generateDirectoryName);
+
 		this.projectdao.save(project);
 	}
 
@@ -94,9 +101,14 @@ public class ProjectService {
 	}*/
 
 	public void updateStatus(final Long projectId, final ProjectStatus status) {
-		final Project project = this.projectdao.findOne(projectId);
-		project.setStatus(status);
-		this.projectdao.save(project);
+		Optional<Project> project = this.projectdao.findById(projectId);
+		if (project.isPresent()) {
+			final Project realProj = project.get();
+			realProj.setStatus(status);
+			this.projectdao.save(realProj);
+		} else {
+			LOG.error("Error getting project by ID");
+		}
 	}
 
 }

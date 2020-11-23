@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -43,28 +44,33 @@ public class ResourceService {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void create(final String projectId, final String name, final String content, final String resourceType) throws IOException {
-		final Project project = this.dao.findOne(Long.valueOf(projectId));
-		final Path path = Paths.get(this.prop.getDirectoryPath(), project.getPath(), name);
-		if (StringUtils.equalsIgnoreCase(resourceType, "file")) {
-			Files.createFile(path);
-			final FileWriter fileWriter = new FileWriter(path.toFile());
-			fileWriter.write(content);
-			fileWriter.flush();
-			fileWriter.close();
-		} else if (StringUtils.equalsIgnoreCase(resourceType, "directory")) {
-			Files.createDirectory(path);
+		Optional<Project> project = this.dao.findById(Long.valueOf(projectId));
+		if (project.isPresent()) {
+			final Project realProj = project.get();
+			final Path path = Paths.get(this.prop.getDirectoryPath(), project.get().getPath(), name);
+			if (StringUtils.equalsIgnoreCase(resourceType, "file")) {
+				Files.createFile(path);
+				final FileWriter fileWriter = new FileWriter(path.toFile());
+				fileWriter.write(content);
+				fileWriter.flush();
+				fileWriter.close();
+			} else if (StringUtils.equalsIgnoreCase(resourceType, "directory")) {
+				Files.createDirectory(path);
+			}
+		} else {
+			LOG.error("Error getting the project by ID");
 		}
-		LOG.debug("Create {}.", path);
 	}
 
 	//TODO add in a folder for pre-built images, since this will be easier than creating new every time
 
 	public List<Resource> findAllResources(final String projectId, final String subpath) {
 		List<Resource> result = new ArrayList<>();
-		final Project project = this.dao.findOne(Long.valueOf(projectId));
-		if (project != null) {
+		Optional<Project> project = this.dao.findById(Long.valueOf(projectId));
+		if (project.isPresent()) {
+			final Project realProj = project.get();
 			try {
-				result = DirectoryUtil.getResources(Paths.get(this.prop.getDirectoryPath(), project.getPath(), subpath));
+				result = DirectoryUtil.getResources(Paths.get(this.prop.getDirectoryPath(), realProj.getPath(), subpath));
 			} catch (final IOException e) {
 				LOG.error("Unable to get resources.", e);
 			}
@@ -75,10 +81,17 @@ public class ResourceService {
 	//Consider adding the getProjectID
 
 	public String getResourceContent(final String projectId, final String resourcePath) throws IOException {
-		final Project project = this.dao.findOne(Long.valueOf(projectId));
-		final Path path = Paths.get(this.prop.getDirectoryPath(), project.getPath(), resourcePath);
-		final byte[] bytes = Files.readAllBytes(path);
-		return new String(bytes);
+		byte[] bytes;
+		Optional<Project> project = this.dao.findById(Long.valueOf(projectId));
+		if (project.isPresent()) {
+			final Project realProj = project.get();
+			final Path path = Paths.get(this.prop.getDirectoryPath(), realProj.getPath(), resourcePath);
+			bytes = Files.readAllBytes(path);
+			return new String(bytes);
+		} else {
+			LOG.error("Unable to get bytes.");
+		}
+		return "";
 	}
 
 }
